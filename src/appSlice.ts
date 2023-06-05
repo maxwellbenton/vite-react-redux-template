@@ -1,5 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit'
 
+const uid = function(){
+    return Date.now().toString(36) + Math.random().toString(36).substr(2);
+}
+
 const loadFromLocalStorage = () => {
   try {
     const serializedState = localStorage.getItem('react-ts-app-state');
@@ -23,35 +27,47 @@ const getAppState = (state: any) => {
 const persistedState = getAppState(loadFromLocalStorage())
 
 const initialState = {
-  value: 0,
   user: {
-    name: 'John Doe',
-    apiKey: ''
+    name: 'Caretaker',
+    location: {
+      coordinates: {
+        latitude: null,
+        longitude: null
+      }
+    }
   },
-  game: {}
+  plants: {
+    // id: {
+    //   name: '',
+    // ...
+    // }
+  },
+  groups: {
+    // plants: [...]
+  }
 }
 
 export const counterSlice = createSlice({
   name: 'app',
   initialState: persistedState || initialState,
+  // Redux Toolkit allows us to write "mutating" logic in reducers. It
+  // doesn't actually mutate the state because it uses the Immer library,
+  // which detects changes to a "draft state" and produces a brand new
+  // immutable state based off those changes
   reducers: {
-    increment: (state: any) => {
-      // Redux Toolkit allows us to write "mutating" logic in reducers. It
-      // doesn't actually mutate the state because it uses the Immer library,
-      // which detects changes to a "draft state" and produces a brand new
-      // immutable state based off those changes
-      state.value += 1
+    addPlant: (state: any, action: any) => {
+      state.plants[uid()] = action.payload
     },
-    decrement: (state: any) => {
-      state.value -= 1
+    updatePlant: (state: any, action: any) => {
+      state.plants[action.payload.id] = action.payload
     },
-    incrementByAmount: (state: any, action: any) => {
-      state.value += action.payload
-    },
+    removePlant: (state: any, action: any) => {
+      delete state.plants[action.payload.id]
+    }
   },
 })
 
 // Action creators are generated for each case reducer function
-export const { increment, decrement, incrementByAmount } = counterSlice.actions
+export const { addPlant, updatePlant, removePlant } = counterSlice.actions
 
 export default counterSlice.reducer
