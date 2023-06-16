@@ -3,6 +3,9 @@ import ReactDOM from 'react-dom/client'
 import { Provider } from 'react-redux'
 import store from './store'
 import App from './App'
+import SplashPage from './SplashPage'
+import Camera from './Camera'
+
 import {
   createBrowserRouter,
   RouterProvider,
@@ -12,18 +15,28 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
-  },
-  {
-    path: "/list",
-    element: <App />,
-  },
-  {
-    path: "/edit",
-    element: <App />,
-  },
-  {
-    path: "/plant",
-    element: <App />,
+    children: [
+      {
+        path: '',
+        element: <SplashPage />
+      },
+      {
+        path: 'camera',
+        element: <Camera />
+      },
+      {
+        path: "list",
+        element: <SplashPage />
+      },
+      {
+        path: "edit",
+        element: <SplashPage />
+      },
+      {
+        path: "plant",
+        element: <SplashPage />
+      }
+    ]
   }
 ]);
 
