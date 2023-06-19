@@ -3,15 +3,19 @@ import Container from '@mui/material/Container';
 import Grid from '@mui/material/Unstable_Grid2';
 import Button from '@mui/material/Button';
 import {
-  Link
+  Link, useLocation
 } from "react-router-dom";
 import GrassOutlinedIcon from '@mui/icons-material/GrassOutlined';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import LockOpenOutlinedIcon from '@mui/icons-material/LockOpenOutlined';
 import UndoOutlinedIcon from '@mui/icons-material/UndoOutlined';
-
+import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
+import Tooltip from '@mui/material/Tooltip';
+import { useSelector, useDispatch } from 'react-redux'
 
 function Navigation() {
+  const isPlantPage = useLocation().pathname.match(/plants\/[a-zA-Z0-9]*/)
+
   return (
     <Container
       disableGutters
@@ -29,10 +33,10 @@ function Navigation() {
         }}
       >
         <HomeButton />
-        <UnlockButton />
-        <BackButton />
+        {isPlantPage && <LockOrUnlock />}
+        <ListButton />
       </Grid>
-    </Container>
+    </Container >
   );
 }
 
@@ -40,24 +44,51 @@ function Navigation() {
 
 function HomeButton() {
   return (
-    <Button>
+    <Tooltip title="Home" placement="top">
       <Link to="/">
-        <GrassOutlinedIcon fontSize='large' />
+        <Button>
+          <GrassOutlinedIcon fontSize='large' />
+        </Button>
       </Link>
-    </Button>
+    </Tooltip>
+
   )
 }
 
-function UnlockButton() {
-  const [clicked, setClicked] = useState(false)
-  const handleClick = () => setClicked(!clicked)
-  return clicked
-    ? <Button onClick={handleClick}><Link to="/plant"><LockOpenOutlinedIcon fontSize='large' /></Link></Button>
-    : <Button onClick={handleClick}><Link to="/edit"><LockOutlinedIcon fontSize='large' /></Link></Button>
+function LockOrUnlock() {
+  const plantId = useSelector((state: any) => state.app.selectedPlantId)
+  const isEditPage = useLocation().pathname.includes('edit')
+  return isEditPage
+    ? (
+      <Tooltip title="Lock" placement="top">
+        <Link to={`/plants/${plantId}`}>
+          <Button>
+            <LockOpenOutlinedIcon fontSize='large' />
+          </Button>
+        </Link>
+      </Tooltip>
+    )
+    : (
+      <Tooltip title="Edit" placement="top">
+        <Link to={`/plants/${plantId}/edit`}>
+          <Button>
+            <LockOutlinedIcon fontSize='large' />
+          </Button>
+        </Link>
+      </Tooltip>
+    )
 }
 
-function BackButton() {
-  return <Button><Link to="/list"><UndoOutlinedIcon fontSize='large' /></Link></Button>
+function ListButton() {
+  return (
+    <Tooltip title="List" placement="top">
+      <Link to="/plants">
+        <Button>
+          <FormatListBulletedIcon fontSize='large' />
+        </Button>
+      </Link>
+    </Tooltip>
+  )
 }
 
 export default Navigation;

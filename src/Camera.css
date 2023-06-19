@@ -1,0 +1,15 @@
+
+
+
+.video-react {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+
+.video-react-video {
+  min-height: 100%;
+}

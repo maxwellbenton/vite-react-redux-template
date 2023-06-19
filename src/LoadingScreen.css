@@ -1,0 +1,110 @@
+.loading-screen {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.stem {
+  background: #529e66;
+  height: 100px;
+  width: 10px;
+  position: relative;
+  animation: grow 3s infinite linear;
+}
+
+.leaf {
+  background: #66bf51;
+  height: 30px;
+  width: 30px;
+  position: absolute;
+  border-radius: 50%;
+}
+
+
+.leaf-one {
+  top: 20px;
+  left: -10px;
+  animation: leaf-one-grow 3s infinite ease-in-out;
+}
+
+.leaf-two {
+  top: 35px;
+  left: -8px;
+  animation: leaf-two-grow 3s infinite ease-in-out;
+}
+
+.leaf-three {
+  top: 25px;
+  left: -10px;
+  animation: leaf-three-grow 3s infinite ease-in-out;
+}
+
+.leaf-four {
+  top: 50px;
+  left: -10px;
+  animation: leaf-four-grow 3s infinite ease-in-out;
+}
+
+@keyframes grow {
+  0% {
+    transform: scaleX(0) scaleY(0);
+  }
+  100% {
+    transform: scaleX(1) scaleY(1);
+  }
+}
+
+@keyframes leaf-one-grow {
+  0% {
+    transform: translate(0px, 0px) scale(0);
+  }
+  10% {
+    transform: translate(0px, 0px) scale(0);
+  }
+  80% {
+    transform: translate(0px, -43px) scale(1.5);
+  }
+  100% {
+    transform: translate(0px, -43px) scale(1.5);
+  }
+}
+
+@keyframes leaf-two-grow {
+  0% {
+    transform: translate(0px, 0px) scale(0);
+  }
+  10% {
+    transform: translate(0px, 0px) scale(0.25);
+  }
+  
+  100% {
+    transform: translate(15px, -30px) scale(1.25);
+  }
+}
+
+@keyframes leaf-three-grow {
+  0% {
+    transform: translate(0px, 0px) scale(0);
+  }
+  10% {
+    transform: translate(0px, 0px) scale(0.25);
+  }
+  100% {
+    transform: translate(-15px, -28px) scale(1.25);
+  }
+}
+
+
+@keyframes leaf-four-grow {
+  0% {
+    transform: translate(0px, 0px) scale(0);
+  }
+  40% {
+    transform: translate(0px, -10px) scale(0);
+  }
+  100% {
+    transform: translate(0px, -25px) scale(1);
+  }
+}
+

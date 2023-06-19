@@ -5,6 +5,9 @@ import store from './store'
 import App from './App'
 import SplashPage from './SplashPage'
 import Camera from './Camera'
+import Plants from './Plants'
+import Plant from './Plant'
+import PlantEdit from './PlantEdit'
 
 import {
   createBrowserRouter,
@@ -25,16 +28,16 @@ const router = createBrowserRouter([
         element: <Camera />
       },
       {
-        path: "list",
-        element: <SplashPage />
+        path: "plants",
+        element: <Plants />
       },
       {
-        path: "edit",
-        element: <SplashPage />
+        path: "plants/:plantId",
+        element: <Plant />
       },
       {
-        path: "plant",
-        element: <SplashPage />
+        path: "plants/:plantId/edit",
+        element: <PlantEdit />
       }
     ]
   }

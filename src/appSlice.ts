@@ -1,8 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-
-const uid = function(){
-    return Date.now().toString(36) + Math.random().toString(36).substr(2);
-}
+import { AppData, User, Plant, Garden, Guild, Group, PlantEvent } from './types'
 
 const loadFromLocalStorage = () => {
   try {
@@ -26,7 +23,7 @@ const getAppState = (state: any) => {
 
 const persistedState = getAppState(loadFromLocalStorage())
 
-const initialState = {
+const initialState: AppData = {
   user: {
     name: 'Caretaker',
     location: {
@@ -34,40 +31,80 @@ const initialState = {
         latitude: null,
         longitude: null
       }
+    },
+    settings: {
+      dateFormat: 'MM/DD/YYYY',
+      defaultIsOutdoor: null,
+      defaultWateringFrequency: null,
+      defaultSunNeeds: null
     }
-  },
+  } as User,
   plants: {
-    // id: {
-    //   name: '',
-    // ...
-    // }
-  },
+    // id: { name: ..., ... }
+  } as Array<Plant>,
+  selectedPlantId: null,
+  eventsLastCreatedAt: 0,
+  gardens: {
+    // id: { plantIds: [...], name: ..., ... }
+  } as Array<Garden>,
   groups: {
-    // plants: [...]
-  }
+    // id: { plantIds: [...], name: ..., ... }
+  } as Array<Group>,
+  guilds: {
+    // id: { plantIds: [...], name: ..., ... }
+  } as Array<Guild>,
+  events: [
+    // { id: ..., type: 'water', plantId: '123', date: '2020-01-01', severity: 'low' }
+  ] as Array<PlantEvent>
 }
 
 export const counterSlice = createSlice({
   name: 'app',
-  initialState: persistedState || initialState,
+  initialState: { ...initialState, ...persistedState},
   // Redux Toolkit allows us to write "mutating" logic in reducers. It
   // doesn't actually mutate the state because it uses the Immer library,
   // which detects changes to a "draft state" and produces a brand new
   // immutable state based off those changes
   reducers: {
     addPlant: (state: any, action: any) => {
-      state.plants[uid()] = action.payload
+      // console.log('ADDING PLANT', action.payload)
+      state.plants[action.payload.id] = action.payload
+    },
+    setSelectedPlant: (state: any, action: any) => {
+      // console.log('SETTING SELECTED PLANT ID', action.payload.id)
+      state.selectedPlantId = action.payload.id
+    },
+    clearSelectedPlant: (state: any) => {
+      state.selectedPlantId = null
     },
     updatePlant: (state: any, action: any) => {
+      // console.log('UPDATING PLANT', action.payload)
       state.plants[action.payload.id] = action.payload
     },
     removePlant: (state: any, action: any) => {
+      // console.log('REMOVING PLANT BY ID', action.payload.id)
       delete state.plants[action.payload.id]
-    }
+    },
+    updateEvents: (state: any, action: any) => {
+      console.log('UPDATING EVENTS', action.payload)
+      state.events = action.payload
+    },
+    updateEventsLastCreatedAt: (state: any) => {
+      console.log('UPDATING EVENTS LAST CREATED AT')
+      state.eventsLastCreatedAt = Date.now()
+    },
   },
 })
 
 // Action creators are generated for each case reducer function
-export const { addPlant, updatePlant, removePlant } = counterSlice.actions
+export const { 
+  addPlant, 
+  setSelectedPlant, 
+  clearSelectedPlant, 
+  updatePlant, 
+  removePlant,
+  updateEvents,
+  updateEventsLastCreatedAt
+} = counterSlice.actions
 
 export default counterSlice.reducer
